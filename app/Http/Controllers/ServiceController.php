@@ -1,55 +1,61 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Vehicle; 
+use App\Models\Vehicle;
 use App\Models\Service;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-   public function create(Vehicle $vehicle)
-{
-    return view('services.form', compact('vehicle'));
-}
+    public function show(Vehicle $vehicle)
+    {
+        $services = $vehicle->services; // σχέση 1:N
+        return view('services.show', compact('vehicle', 'services'));
+    }
 
-public function store(Request $request, Vehicle $vehicle)
-{
-    $data = $request->validate([
-        'type' => 'required|string|max:255',
-        'date' => 'required|date',
-        'mileage' => 'required|integer',
-        'garage' => 'nullable|string|max:255',
-        'notes' => 'nullable|string',
-    ]);
+    public function create(Vehicle $vehicle)
+    {
+        return view('services.create', compact('vehicle'));
+    }
 
-    $vehicle->services()->create($data);
-    return redirect()->route('garage.show', $vehicle);
-}
+    public function store(Request $request, Vehicle $vehicle)
+    {
+        $validated = $request->validate([
+            'type' => 'required|string|max:255',
+            'date' => 'required|date',
+            'mileage' => 'required|integer',
+            'garage' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+        ]);
 
-public function edit(Vehicle $vehicle, Service $service)
-{
-    return view('services.form', compact('vehicle', 'service'));
-}
+        $vehicle->services()->create($validated);
 
-public function update(Request $request, Vehicle $vehicle, Service $service)
-{
-    $data = $request->validate([
-        'type' => 'required|string|max:255',
-        'date' => 'required|date',
-        'mileage' => 'required|integer',
-        'garage' => 'nullable|string|max:255',
-        'notes' => 'nullable|string',
-    ]);
+        return redirect()->route('services.show', $vehicle);
+    }
 
-    $service->update($data);
-    return redirect()->route('garage.show', $vehicle);
-}
+    public function edit(Vehicle $vehicle, Service $service)
+    {
+        return view('services.edit', compact('vehicle', 'service'));
+    }
 
-public function destroy(Vehicle $vehicle, Service $service)
-{
-    $service->delete();
-    return redirect()->route('garage.show', $vehicle);
-}
+    public function update(Request $request, Vehicle $vehicle, Service $service)
+    {
+        $validated = $request->validate([
+            'type' => 'required|string|max:255',
+            'date' => 'required|date',
+            'mileage' => 'required|integer',
+            'garage' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+        ]);
 
+        $service->update($validated);
+
+        return redirect()->route('services.show', $vehicle);
+    }
+
+    public function destroy(Vehicle $vehicle, Service $service)
+    {
+        $service->delete();
+        return redirect()->route('services.show', $vehicle);
+    }
 }

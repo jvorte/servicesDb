@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $vehicle->make }} {{ $vehicle->model }} - {{ __('Services') }}
             </h2>
-            <a href="{{ route('garage.createService', $vehicle) }}"
+            <a href="{{ route('services.create', $vehicle) }}"
                class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
                 + Add Service
             </a>

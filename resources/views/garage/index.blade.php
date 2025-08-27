@@ -17,7 +17,7 @@
         <div class="space-y-3">
         @foreach($vehicles as $vehicle)
             <div class="flex justify-between items-center p-4 bg-white border rounded-lg shadow-sm hover:bg-gray-50">
-                <a href="{{ route('garage.show', $vehicle) }}" class="flex-1 flex items-center space-x-2 truncate font-semibold text-gray-900">
+                <a href="{{ route('services.show', $vehicle) }}" class="flex-1 flex items-center space-x-2 truncate font-semibold text-gray-900">
                     {{-- SVG icon --}}
                        @switch($vehicle->type)
                 @case('car')

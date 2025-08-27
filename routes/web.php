@@ -38,6 +38,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/garage/{vehicle}/show', [GarageController::class, 'show'])->name('garage.show');
     Route::get('/garage/{vehicle}/services/{service}/edit', [GarageController::class, 'edit'])->name('garage.services.edit');
     Route::delete('/garage/{vehicle}/services/{service}', [GarageController::class, 'destroy'])->name('garage.services.destroy');
+
+
+
+        // Vehicle selection
+    Route::get('/garage', [GarageController::class, 'index'])->name('garage.index');
+
+    // Services for a specific vehicle
+    Route::get('/vehicles/{vehicle}/services', [ServiceController::class, 'show'])->name('services.show');
+    Route::get('/vehicles/{vehicle}/services/create', [ServiceController::class, 'create'])->name('services.create');
+    Route::post('/vehicles/{vehicle}/services', [ServiceController::class, 'store'])->name('services.store');
+    Route::get('/vehicles/{vehicle}/services/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
+    Route::put('/vehicles/{vehicle}/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::delete('/vehicles/{vehicle}/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
+
 });
 
 
