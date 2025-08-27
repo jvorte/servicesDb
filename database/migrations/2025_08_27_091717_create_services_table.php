@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->id();
-            $table->date('date');
-            $table->string('type');
-            $table->integer('mileage');
-            $table->string('garage')->nullable();
-            $table->text('notes')->nullable();
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-        });
+    Schema::create('services', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+    $table->string('type');        // για Full Service / Small Service κτλ
+    $table->date('date');
+    $table->integer('mileage');
+    $table->string('garage')->nullable(); // αν θέλεις να καταχωρείς ποιο συνεργείο
+    $table->text('notes')->nullable();
+    $table->json('extras')->nullable(); // για Oil, Oil Filter, κτλ
+    $table->timestamps();
+});
     }
 
     /**

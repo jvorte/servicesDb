@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
@@ -18,20 +19,28 @@ class ServiceController extends Controller
         return view('services.create', compact('vehicle'));
     }
 
-    public function store(Request $request, Vehicle $vehicle)
-    {
-        $validated = $request->validate([
-            'type' => 'required|string|max:255',
-            'date' => 'required|date',
-            'mileage' => 'required|integer',
-            'garage' => 'nullable|string|max:255',
-            'notes' => 'nullable|string',
-        ]);
+public function store(Request $request, Vehicle $vehicle)
+{
+    $data = $request->validate([
+        'type' => 'required|string|max:255',
+        'date' => 'required|date',
+        'mileage' => 'required|integer',
+        'notes' => 'nullable|string',
+        'garage' => 'nullable|string',
+        'extras' => 'nullable|array',
+        'extras.*' => 'string',
+    ]);
 
-        $vehicle->services()->create($validated);
+    // Μετατρέπουμε το array σε string, χωρισμένο με κόμμα
+    $data['extras'] = isset($data['extras']) ? implode(', ', $data['extras']) : null;
 
-        return redirect()->route('services.show', $vehicle);
-    }
+    $data['vehicle_id'] = $vehicle->id;
+
+    Service::create($data);
+
+    return redirect()->route('services.show', $vehicle)->with('success', 'Service added!');
+}
+
 
     public function edit(Vehicle $vehicle, Service $service)
     {
