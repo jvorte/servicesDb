@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vehicle;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -29,11 +30,15 @@ public function store(Request $request, Vehicle $vehicle)
         'garage' => 'nullable|string',
         'extras' => 'nullable|array',
         'extras.*' => 'string',
+        'attachment' => 'nullable|file|mimes:pdf|max:10240', // max 10MB
     ]);
 
-    // Μετατρέπουμε το array σε string, χωρισμένο με κόμμα
-    $data['extras'] = isset($data['extras']) ? implode(', ', $data['extras']) : null;
+    // Αν υπάρχει PDF, αποθήκευσέ το και βάλε το path στο $data
+    if ($request->hasFile('pdf')) {
+        $data['attachment'] = $request->file('pdf')->store('services_pdfs', 'public');
+    }
 
+    $data['extras'] = isset($data['extras']) ? implode(', ', $data['extras']) : null;
     $data['vehicle_id'] = $vehicle->id;
 
     Service::create($data);
@@ -42,28 +47,49 @@ public function store(Request $request, Vehicle $vehicle)
 }
 
 
+
+
+
     public function edit(Vehicle $vehicle, Service $service)
     {
         return view('services.edit', compact('vehicle', 'service'));
     }
 
-    public function update(Request $request, Vehicle $vehicle, Service $service)
-    {
-        $validated = $request->validate([
-            'type' => 'required|string|max:255',
-            'date' => 'required|date',
-            'mileage' => 'required|integer',
-            'garage' => 'nullable|string|max:255',
-            'notes' => 'nullable|string',
-        ]);
+public function update(Request $request, Vehicle $vehicle, Service $service)
+{
+    $data = $request->validate([
+        'type' => 'required|string|max:255',
+        'date' => 'required|date',
+        'mileage' => 'required|integer',
+        'notes' => 'nullable|string',
+        'garage' => 'nullable|string',
+        'extras' => 'nullable|array',
+        'extras.*' => 'string',
+        'attachment' => 'nullable|file|mimes:pdf|max:10240',
+    ]);
 
-        $service->update($validated);
-
-        return redirect()->route('services.show', $vehicle);
+    // Αποθήκευση νέου PDF και διαγραφή παλιού
+    if ($request->hasFile('pdf')) {
+        if ($service->pdf && Storage::disk('public')->exists($service->pdf)) {
+            Storage::disk('public')->delete($service->pdf);
+        }
+        $data['attachment'] = $request->file('pdf')->store('services', 'public');
     }
+
+    $data['extras'] = isset($data['extras']) ? implode(', ', $data['extras']) : null;
+
+    $service->update($data);
+
+    return redirect()->route('services.show', $vehicle)->with('success', 'Service updated!');
+}
+
 
     public function destroy(Vehicle $vehicle, Service $service)
     {
+
+            if ($service->attachment && Storage::disk('public')->exists($service->attachment)) {
+        Storage::disk('public')->delete($service->attachment);
+    }
         $service->delete();
         return redirect()->route('services.show', $vehicle);
     }

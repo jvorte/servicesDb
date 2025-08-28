@@ -7,15 +7,15 @@
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-white shadow sm:rounded-lg p-6">
-            <form method="POST" action="{{ route('services.store', $vehicle) }}">
+            <form method="POST" action="{{ route('services.store', $vehicle) }}" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Service Type --}}
                 <div class="mb-4">
                     <label for="type" class="block mb-2 text-sm font-medium text-gray-900">Service Type</label>
                     <select name="type" id="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="Full Service">Full Service</option>
                         <option value="Small Service">Small Service</option>
+                        <option value="Full Service">Full Service</option>
                         <option value="Repairs">Repairs</option>
                         <option value="Upgrade">Upgrade</option>
                         <option value="Check">Check</option>
@@ -39,21 +39,21 @@
                     <label class="block text-gray-700 font-medium mb-2">Extras</label>
                     <div class="flex flex-wrap gap-4">
                         @php
-                            $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter', 'Air Filter', 'Cabin Filter', 'Sparks'];
+                        $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter', 'Air Filter', 'Cabin Filter', 'Sparks'];
                         @endphp
                         @foreach($extrasOptions as $extra)
-                            <div class="flex items-center">
-                                <input type="checkbox" name="extras[]" value="{{ $extra }}" id="{{ Str::slug($extra) }}" class="w-4 h-4 text-blue-600 border-gray-300 rounded-sm">
-                                <label for="{{ Str::slug($extra) }}" class="ml-2 text-sm font-medium text-gray-900">{{ $extra }}</label>
-                            </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" name="extras[]" value="{{ $extra }}" id="{{ Str::slug($extra) }}" class="w-4 h-4 text-blue-600 border-gray-300 rounded-sm">
+                            <label for="{{ Str::slug($extra) }}" class="ml-2 text-sm font-medium text-gray-900">{{ $extra }}</label>
+                        </div>
                         @endforeach
                     </div>
                 </div>
 
-                      {{-- garage --}}
+                {{-- garage --}}
                 <div class="mb-4">
                     <label for="notes" class="block text-gray-700 font-medium mb-1">Garage</label>
-       <input type="text" name="garage" id="garage" value="Home" class="w-full border-gray-300 rounded-md">
+                    <input type="text" name="garage" id="garage" value="Home" class="w-full border-gray-300 rounded-md">
 
                 </div>
 
@@ -62,6 +62,13 @@
                     <label for="notes" class="block text-gray-700 font-medium mb-1">Notes</label>
                     <textarea name="notes" id="notes" class="w-full border-gray-300 rounded-md" rows="3"></textarea>
                 </div>
+
+                {{-- pdf --}}
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-1">Attach PDF</label>
+                    <input type="file" name="pdf" accept="application/pdf" class="w-full border-gray-300 rounded-md">
+                </div>
+
 
                 {{-- Submit --}}
                 <div class="flex justify-end">

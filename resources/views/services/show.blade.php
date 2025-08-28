@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $vehicle->make }} {{ $vehicle->model }} - {{ __('Services') }}
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight flex gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench-icon lucide-wrench">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" />
+                </svg>
+                {{ $vehicle->brand }} {{ $vehicle->model }} - {{ __('Services') }}
             </h2>
             <a href="{{ route('services.create', $vehicle) }}"
                 class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
@@ -11,61 +14,60 @@
         </div>
     </x-slot>
 
-    <div class="py-6 max-w-6xl mx-auto">
-        <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Date</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Type</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Description</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Mileage</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Garage</th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-600 uppercase">Notes</th>
+    <div class="py-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @forelse($services as $service)
+        <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition p-4">
+            {{-- Header --}}
+            <div class="flex items-center justify-between mb-2">
+                <h5 class="text-lg font-bold text-gray-900">
+                    {{ \Carbon\Carbon::parse($service->date)->format('Y-m-d') }}
+                </h5>
+                <span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-700">
+                    {{ $service->type }}
+                </span>
+            </div>
 
+            {{-- Content --}}
+            <div class="flex-1 space-y-2 text-sm text-gray-700">
+                <p><span class="font-medium">Description:</span>
+                    {{ !empty($service->extras) ? implode(', ', (array) $service->extras) : '-' }}
+                </p>
+                <p><span class="font-medium">Mileage:</span> {{ $service->mileage }}</p>
+                <p><span class="font-medium">Garage:</span> {{ $service->garage ?? '-' }}</p>
+                <p class="line-clamp-3"><span class="font-medium">Notes:</span> {{ $service->notes ?? '-' }}</p>
+            </div>
 
-                        <th class="px-6 py-3 text-right font-medium text-gray-600 uppercase">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @forelse($services as $service)
-                    <tr>
-                        <td class="px-6 py-4">{{ \Carbon\Carbon::parse($service->date)->format('Y-m-d') }}</td>
-                        <td class="px-6 py-4">{{ $service->type }}</td>
-                     <td class="px-6 py-4">
-    {{ !empty($service->extras) ? implode(', ', (array) $service->extras) : '-' }}
-</td>
-                        <td class="px-6 py-4">{{ $service->mileage }}</td>
-                        <td class="px-6 py-4">{{ $service->garage ?? '-' }}</td>
-                       <td class="px-6 py-4" style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-    {{ $service->notes ?? '-' }}
-</td>
+         @if($service->attachment)
+    <p class="mb-2">
+        <strong>Attachment:</strong>
+        <a href="{{ Storage::url($service->attachment) }}" target="_blank" class="text-blue-600 hover:underline">
+            View PDF
+        </a>
+    </p>
+    @endif
 
-
-                        <td class="px-6 py-4 text-right space-x-2">
-                            <a href="{{ route('services.edit', [$vehicle, $service]) }}"
-                                class="px-2 py-1 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                                Edit
-                            </a>
-                            <form action="{{ route('services.destroy', [$vehicle, $service]) }}" method="POST"
-                                class="inline-block" onsubmit="return confirm('Delete this service?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-2 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">
-                            No services found
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            {{-- Actions --}}
+            <div class="mt-4 flex justify-end space-x-2">
+                <a href="{{ route('services.edit', [$vehicle, $service]) }}"
+                    class="px-3 py-1 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                    Edit
+                </a>
+                <form action="{{ route('services.destroy', [$vehicle, $service]) }}" method="POST"
+                    onsubmit="return confirm('Delete this service?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">
+                        Delete
+                    </button>
+                </form>
+            </div>
         </div>
+        @empty
+        <div class="col-span-full text-center text-gray-500">
+            No services found
+        </div>
+        @endforelse
     </div>
+
 </x-app-layout>

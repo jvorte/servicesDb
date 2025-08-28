@@ -12,12 +12,13 @@ class Service extends Model
         'date',
         'mileage',
         'garage',
-         'extras',
+        'extras',
         'notes',
+        'attachment',
     ];
-protected $casts = [
-    'date' => 'datetime',
-];
+    protected $casts = [
+        'date' => 'datetime',
+    ];
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
