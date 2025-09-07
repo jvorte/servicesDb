@@ -20,10 +20,6 @@ A simple web application built with Laravel for managing vehicle-related tasks, 
 - CSS / Tailwind (if used)
 - Hostinger Hosting
 
-## Live Demo
-
-Check out the live application here: [Garage Management Tool](https://mediumblue-pheasant-701953.hostingersite.com/garage)
-
 ## Installation (Optional)
 
 If you want to run the project locally:
