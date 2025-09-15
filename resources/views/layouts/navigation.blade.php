@@ -12,10 +12,22 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <!-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-gauge-icon lucide-circle-gauge">
+                            <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M13.4 10.6 19 5" />
+                        </svg>
+
                         {{ __('Dashboard') }}
-                    </x-nav-link> -->
-                    <x-nav-link :href="route('garage.index')" :active="request()->routeIs('garage.*')">
+                    </x-nav-link>
+                    <x-nav-link :href="route('garage.index')" :active="request()->routeIs('garage.*')" class="gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-warehouse-icon lucide-warehouse">
+                            <path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" />
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" />
+                            <path d="M6 13h12" />
+                            <path d="M6 17h12" />
+                        </svg>
                         {{ __('Garage') }}
                     </x-nav-link>
                 </div>
@@ -70,10 +82,22 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <!-- <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="gap-1 flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-gauge-icon lucide-circle-gauge">
+                    <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
+                    <circle cx="12" cy="12" r="2" />
+                    <path d="M13.4 10.6 19 5" />
+                </svg>
+
                 {{ __('Dashboard') }}
-            </x-responsive-nav-link> -->
-                   <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('garage.index')"  :active="request()->routeIs('garage.*')" class="gap-1 flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-warehouse-icon lucide-warehouse">
+                    <path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" />
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" />
+                    <path d="M6 13h12" />
+                    <path d="M6 17h12" />
+                </svg>
                 {{ __('Garage') }}
             </x-responsive-nav-link>
         </div>

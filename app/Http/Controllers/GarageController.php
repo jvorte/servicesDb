@@ -47,20 +47,21 @@ class GarageController extends Controller
         return view('garage.create'); // Blade με form για νέο όχημα
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'brand' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'plate' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'year' => 'required|integer',
-            'engine' => 'nullable|string|max:255',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'brand' => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+        'plate' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'year' => 'required|integer',
+        'engine' => 'nullable|string|max:255',
+    ]);
 
+    // Προτιμότερο: μέσω του χρήστη για να περαστεί σωστά το user_id
+    auth()->user()->vehicles()->create($request->all());
 
-        Vehicle::create($request->all());
+    return redirect()->route('garage.index')->with('success', 'Vehicle added!');
+}
 
-        return redirect()->route('garage.index')->with('success', 'Vehicle added!');
-    }
 }

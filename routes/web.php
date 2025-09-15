@@ -5,7 +5,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\GarageController;
 use Illuminate\Support\Facades\Route;
 
-
+use App\Models\Vehicle;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +39,28 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/garage/{vehicle}/services/{service}/edit', [GarageController::class, 'edit'])->name('garage.services.edit');
     Route::delete('/garage/{vehicle}/services/{service}', [GarageController::class, 'destroy'])->name('garage.services.destroy');
 
+Route::get('/vehicles/{vehicle}/services/export-pdf', [App\Http\Controllers\ServiceController::class, 'exportPdf'])
+    ->name('services.export.pdf');
+
+
+
+
+Route::get('/dashboard', function () {
+    $vehicles = Vehicle::with('services') // φορτώνει όλα τα services
+                        ->where('user_id', auth()->id())
+                        ->get();
+
+    // Στατιστικά
+    $stats = [
+        'totalVehicles' => $vehicles->count(),
+        'totalServices' => $vehicles->sum(fn($v) => $v->services->count()),
+        'cars' => $vehicles->where('type','car')->count(),
+        'motos' => $vehicles->where('type','moto')->count(),
+        'boats' => $vehicles->where('type','boat')->count(),
+    ];
+
+    return view('dashboard', compact('vehicles','stats'));
+})->middleware(['auth','verified'])->name('dashboard');
 
 
         // Vehicle selection

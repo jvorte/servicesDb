@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-4xl mx-auto bg-white shadow sm:rounded-lg p-6">
+    <div class="my-6 max-w-4xl mx-auto bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('garage.store') }}">
             @csrf
             <div class="mb-4">

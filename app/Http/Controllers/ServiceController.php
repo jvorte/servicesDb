@@ -6,7 +6,7 @@ use App\Models\Vehicle;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+    use Barryvdh\DomPDF\Facade\Pdf;
 class ServiceController extends Controller
 {
     public function show(Vehicle $vehicle)
@@ -93,4 +93,22 @@ public function update(Request $request, Vehicle $vehicle, Service $service)
         $service->delete();
         return redirect()->route('services.show', $vehicle);
     }
+
+
+
+
+public function exportPdf(Vehicle $vehicle)
+{
+    $services = $vehicle->services()->get();
+
+    $pdf = Pdf::loadView('services.export-pdf', [
+        'vehicle' => $vehicle,
+        'services' => $services,
+    ]);
+
+    $fileName = $vehicle->brand . '_' . $vehicle->model . '_services.pdf';
+
+    return $pdf->download($fileName);
+}
+
 }
