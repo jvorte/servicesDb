@@ -36,10 +36,10 @@
 
                 {{-- Extras / Checkboxes --}}
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">Extras</label>
+                    <label class="block text-gray-700 font-medium mb-2">Details</label>
                     <div class="flex flex-wrap gap-4">
                         @php
-                        $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter', 'Air Filter', 'Cabin Filter', 'Sparks'];
+                        $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter', 'Cooling Fluid', 'Air Filter', 'Cabin Filter', 'Sparks', 'Haldex','Dpf', 'Brakes Front', 'Brakes Rear'];
                         @endphp
                         @foreach($extrasOptions as $extra)
                         <div class="flex items-center">
@@ -72,7 +72,7 @@
 
                 {{-- Submit --}}
                 <div class="flex justify-end">
-                    <a href="{{ route('services.index', $vehicle) }}" class="mr-3 text-gray-600 hover:text-gray-900">Cancel</a>
+                    <a href="{{ route('services.show', $vehicle) }}" class="mr-3 text-gray-600 hover:text-gray-900">Cancel</a>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">Add Service</button>
                 </div>
             </form>

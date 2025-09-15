@@ -40,7 +40,7 @@
                 </div>
 
                 @php
-                $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter', 'Air Filter', 'Cabin Filter', 'Sparks'];
+                $extrasOptions = ['Oil', 'Oil Filter', 'Fuel Filter','Cooling Fluid', 'Air Filter', 'Cabin Filter', 'Sparks', 'Haldex','Dpf', 'Brakes Front', 'Brakes Rear', ];
 
                 // Παίρνουμε τα ήδη αποθηκευμένα extras από τη βάση, και τα μετατρέπουμε σε array
                 $selectedExtras = isset($service->extras) ? explode(', ', $service->extras) : [];

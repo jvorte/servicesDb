@@ -70,17 +70,38 @@
                 <div class="flex items-center space-x-2">
                     <span class="text-gray-500">({{ $vehicle->year }})</span>
 
-                    <form action="{{ route('garage.destroy', $vehicle) }}" method="POST"
-                        onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="px-2 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">
-                            Delete
-                        </button>
-                    </form>
+                <!-- Κουμπί -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $vehicle->id }}">
+  Delete
+</button>
                 </div>
             </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal-{{ $vehicle->id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+      </div>
+      <div class="modal-body">
+        Do you want delete this Vehicle ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form action="{{ route('garage.destroy', $vehicle) }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">Yes, delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+            
             @endforeach
         </div>
     </div>
