@@ -113,4 +113,11 @@ public function exportPdf(Vehicle $vehicle)
     return $pdf->download($fileName);
 }
 
+
+public function complete(Service $service)
+{
+    $service->update(['completed' => true]);
+    return back()->with('success', 'Service marked as completed!');
+}
+
 }

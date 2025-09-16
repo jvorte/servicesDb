@@ -10,13 +10,15 @@ class GarageController extends Controller
 {
     public function index()
     {
-        $vehicles = Vehicle::all(); // οχήματα του user
+        $vehicles = auth()->user()->vehicles()->with('services')->get();
+
         return view('garage.index', compact('vehicles'));
     }
 
     public function show($id)
     {
-        $vehicle = Vehicle::with('services')->findOrFail($id);
+       $vehicle = auth()->user()->vehicles()->with('services')->findOrFail($id);
+
 
         // Παίρνουμε τα services
         $services = $vehicle->services;
@@ -30,13 +32,12 @@ class GarageController extends Controller
         return view('garage.services', compact('vehicle', 'services'));
     }
 
-   public function edit(Vehicle $garage)
+public function edit(Vehicle $vehicle)
 {
-    // $garage είναι το μοντέλο που παίρνει από το route {garage}
-    return view('garage.edit', ['vehicle' => $garage]);
+    return view('garage.edit', compact('vehicle'));
 }
 
-public function update(Request $request, Vehicle $garage)
+public function update(Request $request, Vehicle $vehicle)
 {
     $validated = $request->validate([
         'brand'  => 'required|string|max:255',
@@ -47,7 +48,7 @@ public function update(Request $request, Vehicle $garage)
         'engine' => 'nullable|string|max:255',
     ]);
 
-    $garage->update($validated);
+    $vehicle->update($validated);
 
     return redirect()->route('garage.index')
                      ->with('success', 'Vehicle updated successfully!');
@@ -56,6 +57,8 @@ public function update(Request $request, Vehicle $garage)
 
     public function destroy(Vehicle $vehicle)
     {
+
+        // dd($vehicle);
         $vehicle->delete(); // Θα σβήσει και όλα τα services λόγω onDelete('cascade')
         return redirect()->route('garage.index')->with('success', 'Vehicle deleted!');
     }

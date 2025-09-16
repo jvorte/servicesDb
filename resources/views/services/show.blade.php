@@ -40,7 +40,7 @@
                 </span>
             </div>
 
-            {{-- Content --}}
+      
             {{-- Content --}}
             <div class="flex-1 space-y-2 text-sm text-gray-700">
                 <p><span class="font-medium">Description:</span>
@@ -48,6 +48,7 @@
                 </p>
                 <p><span class="font-medium">Mileage:</span> {{ $service->mileage }} km</p>
                 <p><span class="font-medium">Garage:</span> {{ $service->garage ?? '-' }}</p>
+                <p><span class="font-medium">Completed:</span>  {{ $service->completed ? 'Yes' : 'No' }}</p>
                 <p class="line-clamp-3"><span class="font-medium">Notes:</span> {{ $service->notes ?? '-' }}</p>
 
                 <p>

@@ -107,6 +107,7 @@ CREATE TABLE `services` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `next_service` int(11) NOT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `services_vehicle_id_foreign` (`vehicle_id`),
   CONSTRAINT `services_vehicle_id_foreign` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE
@@ -151,6 +152,7 @@ CREATE TABLE `vehicles` (
   `brand` varchar(255) NOT NULL,
   `model` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
+  `engine` varchar(255) DEFAULT NULL,
   `plate` varchar(255) DEFAULT NULL,
   `year` year(4) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -176,3 +178,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2025_08_27_0917
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2025_08_28_064220_add_attachment_to_services_table',2);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2025_09_15_123443_add_user_id_to_vehicles_table',3);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2025_09_15_140143_add_service_interval_to_vehicles_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2025_09_16_075509_add_engine_to_vehicles_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2025_09_16_102813_add_completed_to_vehicles_table',5);

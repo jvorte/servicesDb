@@ -68,7 +68,7 @@
         </a>
 
         <div class="flex items-center space-x-3">
-          <span class="text-gray-500">Licence Plate: {{ $vehicle->plate }}</span>
+          <!-- <span class="text-gray-500">Licence Plate: {{ $vehicle->plate }}</span> -->
 
           <!-- Κουμπί -->
           <a href="{{ route('garage.edit', $vehicle) }}"

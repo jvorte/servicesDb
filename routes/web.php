@@ -48,11 +48,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /**
      * Garage (Vehicles) - full resource
      */
-    Route::resource('garage', GarageController::class);
+Route::middleware(['auth'])->group(function () {
+
+    // Garage routes
+    Route::get('/garage', [GarageController::class, 'index'])->name('garage.index');
+    Route::get('/garage/create', [GarageController::class, 'create'])->name('garage.create');
+    Route::post('/garage', [GarageController::class, 'store'])->name('garage.store');
+
+    // Όλα τα routes που αφορούν ένα συγκεκριμένο όχημα
+    Route::prefix('garage/{vehicle}')->group(function () {
+        Route::get('edit', [GarageController::class, 'edit'])->name('garage.edit');
+        Route::put('', [GarageController::class, 'update'])->name('garage.update');
+        Route::delete('', [GarageController::class, 'destroy'])->name('garage.destroy');
+        Route::get('show', [GarageController::class, 'show'])->name('garage.show');
+    });
+
+});
 
     /**
      * Vehicle Services
      */
+    Route::patch('/services/{service}/complete', [ServiceController::class, 'complete'])->name('services.complete');
+
     Route::prefix('vehicles/{vehicle}')->group(function () {
         Route::get('services', [ServiceController::class, 'show'])->name('services.show');
         Route::get('services/create', [ServiceController::class, 'create'])->name('services.create');
