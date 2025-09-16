@@ -14,6 +14,7 @@ class Service extends Model
         'garage',
         'extras',
         'notes',
+        'next_service',
         'attachment',
     ];
     protected $casts = [

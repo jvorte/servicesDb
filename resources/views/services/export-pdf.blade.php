@@ -45,6 +45,7 @@
                 <th>Mileage</th>
                 <th>Garage</th>
                 <th>Notes</th>
+                <th>Next Service</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +57,7 @@
                 <td>{{ $service->mileage }} km</td>
                 <td>{{ $service->garage ?? '-' }}</td>
                 <td>{{ $service->notes ?? '-' }}</td>
+                <td>{{ $service->mileage + $service->next_service }} km</td>
             </tr>
             @empty
             <tr>

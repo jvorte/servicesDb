@@ -106,6 +106,7 @@ CREATE TABLE `services` (
   `extras` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `next_service` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `services_vehicle_id_foreign` (`vehicle_id`),
   CONSTRAINT `services_vehicle_id_foreign` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE
@@ -154,7 +155,10 @@ CREATE TABLE `vehicles` (
   `year` year(4) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `vehicles_user_id_foreign` (`user_id`),
+  CONSTRAINT `vehicles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -170,3 +174,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (3,'0001_01_01_0000
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2025_08_27_090647_create_vehicles_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2025_08_27_091717_create_services_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2025_08_28_064220_add_attachment_to_services_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2025_09_15_123443_add_user_id_to_vehicles_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2025_09_15_140143_add_service_interval_to_vehicles_table',3);

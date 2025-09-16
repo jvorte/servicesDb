@@ -70,6 +70,17 @@
                     <input type="text" name="garage" value="{{ old('garage', $service->garage) }}" class="w-full border-gray-300 rounded-md">
                 </div>
 
+                        <div class="mb-4">
+                    <label for="next_service" class="block mb-2 text-sm font-medium">Next Service After</label>
+                    <select id="next_service" name="next_service" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="{{ old('notes', $service->next_service) }}">{{ old('notes', $service->next_service) }}</option>
+                        <option value="3500">3500</option>
+                        <option value="5000">5000</option>
+                        <option value="8500">8500</option>
+                        <option value="10000">10000</option>
+                    </select>
+                </div>
+
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-1">Notes</label>
                     <textarea name="notes" class="w-full border-gray-300 rounded-md" rows="3">{{ old('notes', $service->notes) }}</textarea>

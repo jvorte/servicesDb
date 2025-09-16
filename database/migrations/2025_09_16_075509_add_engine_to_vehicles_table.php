@@ -9,16 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up()
+  public function up(): void
 {
     Schema::table('vehicles', function (Blueprint $table) {
-        $table->foreignId('user_id')
-            ->nullable() // το κάνεις nullable για να μην σπάσει
-            ->constrained()
-            ->onDelete('cascade');
+        $table->string('engine')->nullable()->after('type'); 
     });
 }
-
 
 
     /**

@@ -9,7 +9,7 @@
         <form method="POST" action="{{ route('garage.store') }}">
             @csrf
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Make</label>
+                <label class="block text-sm font-medium text-gray-700">Brand</label>
                 <input type="text" name="brand" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
             </div>
             <div class="mb-4">
@@ -25,7 +25,7 @@
                 <input type="text" name="plate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
             </div>
             <div class="mb-4">
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                <label for="countries" class="block mb-2 text-sm font-medium">Select an option</label>
                 <select id="countries" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     <option value="car">Car</option>
                     <option value="moto">Motorcycle</option>
@@ -33,6 +33,7 @@
                     <option value="other">Other</option>
                 </select>
             </div>
+         
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Engine (optional)</label>
                 <input type="text" name="engine" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">

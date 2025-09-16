@@ -1,30 +1,30 @@
 <x-app-layout>
-<x-slot name="header">
-    <div class="flex justify-between items-center">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight flex gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-                 stroke-linecap="round" stroke-linejoin="round" 
-                 class="lucide lucide-wrench-icon lucide-wrench">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" />
-            </svg>
-            {{ $vehicle->brand }} {{ $vehicle->model }} - {{ __('Services') }}
-        </h2>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight flex gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-wrench-icon lucide-wrench">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" />
+                </svg>
+                {{ $vehicle->brand }} {{ $vehicle->model }} - {{ __('Services') }}
+            </h2>
 
-        {{-- Κουμπιά --}}
-        <div class="flex gap-2">
-            <a href="{{ route('services.export.pdf', $vehicle) }}"
-                class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md shadow hover:bg-green-700">
-                Export PDF
-            </a>
+            {{-- Κουμπιά --}}
+            <div class="flex gap-2">
+                <a href="{{ route('services.export.pdf', $vehicle) }}"
+                    class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md shadow hover:bg-green-700">
+                    Export PDF
+                </a>
 
-            <a href="{{ route('services.create', $vehicle) }}"
-                class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
-                + Add Service
-            </a>
+                <a href="{{ route('services.create', $vehicle) }}"
+                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
+                    + Add Service
+                </a>
+            </div>
         </div>
-    </div>
-</x-slot>
+    </x-slot>
 
 
     <div class="py-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -41,6 +41,7 @@
             </div>
 
             {{-- Content --}}
+            {{-- Content --}}
             <div class="flex-1 space-y-2 text-sm text-gray-700">
                 <p><span class="font-medium">Description:</span>
                     {{ !empty($service->extras) ? implode(', ', (array) $service->extras) : '-' }}
@@ -48,7 +49,13 @@
                 <p><span class="font-medium">Mileage:</span> {{ $service->mileage }} km</p>
                 <p><span class="font-medium">Garage:</span> {{ $service->garage ?? '-' }}</p>
                 <p class="line-clamp-3"><span class="font-medium">Notes:</span> {{ $service->notes ?? '-' }}</p>
+
+                <p>
+                    <span class="font-medium">Next Service:</span>
+                    {{ $service->mileage + $service->next_service }} km
+                </p>
             </div>
+
 
             @if($service->attachment)
             <p class="mb-2">

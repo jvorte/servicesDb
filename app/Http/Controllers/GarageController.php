@@ -30,10 +30,29 @@ class GarageController extends Controller
         return view('garage.services', compact('vehicle', 'services'));
     }
 
-    public function edit(Vehicle $vehicle, Service $service)
-    {
-        return view('garage.edit', compact('vehicle', 'service'));
-    }
+   public function edit(Vehicle $garage)
+{
+    // $garage είναι το μοντέλο που παίρνει από το route {garage}
+    return view('garage.edit', ['vehicle' => $garage]);
+}
+
+public function update(Request $request, Vehicle $garage)
+{
+    $validated = $request->validate([
+        'brand'  => 'required|string|max:255',
+        'model'  => 'required|string|max:255',
+        'year'   => 'nullable|integer',
+        'plate'  => 'nullable|string|max:20',
+        'type'   => 'required|string|in:car,moto,boat,other',
+        'engine' => 'nullable|string|max:255',
+    ]);
+
+    $garage->update($validated);
+
+    return redirect()->route('garage.index')
+                     ->with('success', 'Vehicle updated successfully!');
+}
+
 
     public function destroy(Vehicle $vehicle)
     {
@@ -54,6 +73,7 @@ public function store(Request $request)
         'model' => 'required|string|max:255',
         'plate' => 'required|string|max:255',
         'type' => 'required|string|max:255',
+     
         'year' => 'required|integer',
         'engine' => 'nullable|string|max:255',
     ]);

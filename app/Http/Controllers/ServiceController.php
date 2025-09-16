@@ -30,6 +30,7 @@ public function store(Request $request, Vehicle $vehicle)
         'garage' => 'nullable|string',
         'extras' => 'nullable|array',
         'extras.*' => 'string',
+        'next_service' => 'nullable|integer',
         'attachment' => 'nullable|file|mimes:pdf|max:10240', // max 10MB
     ]);
 
@@ -63,6 +64,7 @@ public function update(Request $request, Vehicle $vehicle, Service $service)
         'mileage' => 'required|integer',
         'notes' => 'nullable|string',
         'garage' => 'nullable|string',
+        'next_service' => 'nullable|integer',
         'extras' => 'nullable|array',
         'extras.*' => 'string',
         'attachment' => 'nullable|file|mimes:pdf|max:10240',

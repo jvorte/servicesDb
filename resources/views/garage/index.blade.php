@@ -67,10 +67,14 @@
           <span>{{ $vehicle->brand }} {{ $vehicle->model }}</span>
         </a>
 
-        <div class="flex items-center space-x-2">
-          <span class="text-gray-500">({{ $vehicle->year }})</span>
+        <div class="flex items-center space-x-3">
+          <span class="text-gray-500">Licence Plate: {{ $vehicle->plate }}</span>
 
           <!-- Κουμπί -->
+          <a href="{{ route('garage.edit', $vehicle) }}"
+            class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
+            Edit
+          </a>
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $vehicle->id }}">
             Delete
           </button>

@@ -25,52 +25,98 @@
         <!-- Smart Alerts -->
         <div class="space-y-2">
             @foreach($vehicles as $vehicle)
-                @foreach($vehicle->services as $service)
-                    @php
-                        $serviceDate = \Carbon\Carbon::parse($service->date);
-                        $overdue = now()->gt($serviceDate->addYear()); // 1 έτος από το service
-                        $upcoming = now()->diffInDays($serviceDate) <= 30 && !$overdue;
-                        // Μπορείς να προσθέσεις και έλεγχο mileage αν έχει περάσει threshold
-                        $mileageThreshold = 1000; 
-                        $mileageOver = $service->mileage >= $service->vehicle->current_mileage + $mileageThreshold;
-                    @endphp
+            @foreach($vehicle->services as $service)
+            @php
+            // ασφαλής ανάγνωση ημερομηνίας (αν είναι ήδη Carbon ή string)
+            if (empty($service->date)) {
+            $overdue = false;
+            $upcoming = false;
+            } else {
+            $serviceDate = $service->date instanceof \Carbon\Carbon
+            ? $service->date->copy()
+            : \Carbon\Carbon::parse($service->date);
 
-                    @if($overdue || $mileageOver)
-                        <div class="bg-red-100 text-red-700 p-2 rounded">
-                            Overdue service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
-                        </div>
-                    @elseif($upcoming)
-                        <div class="bg-yellow-100 text-yellow-700 p-2 rounded">
-                            Upcoming service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
-                        </div>
-                    @endif
+            // next due date = service date + 1 year (χωρίς να αλλάξουμε το original)
+            $dueDate = $serviceDate->copy()->addYear();
+
+            // overdue αν τώρα > dueDate
+            $overdue = now()->gt($dueDate);
+
+            // upcoming: dueDate είναι στο μέλλον και μέσα στις επόμενες 30 μέρες
+            $upcoming = $dueDate->isFuture() && now()->diffInDays($dueDate) <= 30 && ! $overdue;
+                }
+
+                // --- mileage logic ---
+                $mileageThreshold=1000; // προειδοποίηση πριν/μετά
+                $nextServiceKm=$service->next_service ?? 0; // αν έχεις πεδίο next_service
+                $serviceBaseMileage = $service->mileage ?? 0;
+                $nextServiceMileage = $serviceBaseMileage + $nextServiceKm;
+
+                $currentMileage = $service->vehicle->current_mileage ?? 0;
+
+                // overdue by mileage: current >= planned next service mileage
+                $mileageOverdue = $currentMileage >= $nextServiceMileage;
+
+                // approaching by mileage: είμαστε μέσα στο threshold πριν το επόμενο service
+                $mileageApproaching = ! $mileageOverdue && ($currentMileage >= ($nextServiceMileage - $mileageThreshold));
+
+                // τελικό αποτέλεσμα για εμφάνιση
+                $isOverdue = $overdue || $mileageOverdue;
+                $isUpcoming = ! $isOverdue && ($upcoming || $mileageApproaching);
+                @endphp
+
+                @if($isOverdue)
+                <div class="bg-red-100 text-red-700 p-2 rounded">
+                    Overdue service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
+                </div>
+                @elseif($isUpcoming)
+                <div class="bg-yellow-100 text-yellow-700 p-2 rounded">
+                    Upcoming service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
+                </div>
+                @endif
                 @endforeach
-            @endforeach
+                @endforeach
         </div>
+
+
+
 
         <!-- Recent Services -->
         <div class="bg-white shadow rounded-lg p-4">
             <h3 class="font-semibold mb-3">Recent Services</h3>
             @foreach($vehicles as $vehicle)
-                <div class="mb-4">
-                    <h4 class="font-medium">{{ $vehicle->brand }} {{ $vehicle->model }} ({{ $vehicle->type }})</h4>
-                    <ul class="list-disc ml-5">
-                        @forelse($vehicle->services->sortByDesc('date')->take(5) as $service)
-                            <li>
-                                {{ \Carbon\Carbon::parse($service->date)->format('Y-m-d') }} - {{ $service->type }} 
-                                ({{ $service->mileage }} km)
-                                @php
-                                    $overdue = now()->gt(\Carbon\Carbon::parse($service->date)->addYear());
-                                @endphp
-                                @if($overdue)
-                                    <span class="text-red-600 font-semibold">[OVERDUE]</span>
-                                @endif
-                            </li>
-                        @empty
-                            <li class="text-gray-500">No services recorded</li>
-                        @endforelse
-                    </ul>
-                </div>
+            <div class="mb-4">
+                <h4 class="font-medium">{{ $vehicle->brand }} {{ $vehicle->model }} ({{ $vehicle->type }})</h4>
+                <ul class="list-disc ml-5">
+                    @forelse($vehicle->services->sortByDesc('date')->take(5) as $service)
+                    <li>
+                        {{ \Carbon\Carbon::parse($service->date)->format('Y-m-d') }} - {{ $service->type }}
+                        ({{ $service->mileage }} km)
+                        @php
+                        $overdue = now()->gt(\Carbon\Carbon::parse($service->date)->addYear());
+                        @endphp
+                        @if($overdue)
+                        <span class="text-red-600 font-semibold">[OVERDUE]</span>
+                        @endif
+                    </li>
+                    @empty
+                    <li class="text-gray-500">No services recorded</li>
+                    @endforelse
+
+                    {{-- Next Service --}}
+                    @php
+                    $lastService = $vehicle->services->sortByDesc('date')->first();
+                    @endphp
+                    @if($lastService)
+                    <li>
+                        Next Service: {{ ($lastService->mileage ?? 0) + ($lastService->next_service ?? 0) }} km
+                    </li>
+                    @else
+                    <li class="text-gray-500">Next Service: N/A</li>
+                    @endif
+                </ul>
+
+            </div>
             @endforeach
         </div>
 
