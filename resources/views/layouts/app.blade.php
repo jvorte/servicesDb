@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="storage/images/tools.png" type="engine/png">
+<link rel="icon" href="{{ asset('storage/images/tools.png') }}" type="image/png">
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
