@@ -20,6 +20,7 @@
 </head>
 
 <body class="font-sans antialiased">
+
     <div class="min-h-screen bg-gray-100">
         @include('layouts.navigation')
 
@@ -33,10 +34,19 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main class="bg-[#FDFDFC] text-[#1b1b18] p-6 lg:p-8 min-h-screen"
+            style="background-image: url('{{ asset('storage/images/parts.jpg') }}');
+             background-size: cover;
+             background-position: center;
+             background-repeat: no-repeat;">
             {{ $slot }}
         </main>
+
     </div>
+
+    <x-footer />
+
+
 </body>
 
 </html>

@@ -6,7 +6,7 @@
                 <circle cx="12" cy="12" r="2" />
                 <path d="M13.4 10.6 19 5" />
             </svg>
-            {{ __('Dashboard') }}
+            {{ __('messages.dashboard') }}
         </h2>
     </x-slot>
 
@@ -39,23 +39,23 @@
 
                         @if($isOverdue)
                             <div class="bg-red-100 text-red-700 p-2 rounded flex justify-between items-center">
-                                Overdue service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
+                                {{ __('messages.Overdue service for') }} {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
                                 <form method="POST" action="{{ route('services.complete', $service) }}">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="ml-3 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700">
-                                        Mark as done
+                                        {{ __('messages.Mark as done') }}
                                     </button>
                                 </form>
                             </div>
                         @elseif($isUpcoming)
                             <div class="bg-yellow-100 text-yellow-700 p-2 rounded flex justify-between items-center">
-                                Upcoming service for {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
+                             {{ __('messages.Upcoming service for') }}    {{ $vehicle->brand }} {{ $vehicle->model }} ({{ $service->type }})
                                 <form method="POST" action="{{ route('services.complete', $service) }}">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="ml-3 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700">
-                                        Mark as done
+                                       {{ __('messages.Mark as done') }}
                                     </button>
                                 </form>
                             </div>
@@ -67,7 +67,7 @@
 
         <!-- Recent Services -->
         <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="font-semibold mb-3 text-xl">Recent Services</h3>
+            <h3 class="font-semibold mb-3 text-xl">{{ __('messages.recent_services') }}</h3>
             @foreach($vehicles as $vehicle)
                 <div class="mb-4">
                     <h4 class="font-medium">{{ $vehicle->brand }} {{ $vehicle->model }} ({{ $vehicle->type }})</h4>
@@ -78,7 +78,7 @@
                                     {{ \Carbon\Carbon::parse($service->date)->format('Y-m-d') }} - {{ $service->type }}
                                     ({{ $service->mileage }} km)
                                     @if(!$service->completed && now()->gt(\Carbon\Carbon::parse($service->date)->addYear()))
-                                        <span class="text-red-600 font-semibold">[OVERDUE]</span>
+                                        <span class="text-red-600 font-semibold">{{ __('messages.overdue') }}</span>
                                     @endif
                                 </span>
 
@@ -87,13 +87,13 @@
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="ml-3 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700">
-                                            Mark as done
+                                          {{ __('messages.Mark as done') }}
                                         </button>
                                     </form>
                                 @endif
                             </li>
                         @empty
-                            <li class="text-gray-500">No services recorded</li>
+                            <li class="text-gray-500">{{ __('messages.no_services_recorded') }}</li>
                         @endforelse
 
                         {{-- Next Service --}}
@@ -102,10 +102,10 @@
                         @endphp
                         @if($lastService)
                             <li class="mt-2 font-semibold">
-                                Next Service: {{ ($lastService->mileage ?? 0) + ($lastService->next_service ?? 0) }} km
+                               {{ __('messages.next_service') }}: {{ ($lastService->mileage ?? 0) + ($lastService->next_service ?? 0) }} km
                             </li>
                         @else
-                            <li class="text-gray-500">Next Service: N/A</li>
+                            <li class="text-gray-500">{{ __('messages.next_service') }}: N/A</li>
                         @endif
                     </ul>
                 </div>
@@ -113,4 +113,6 @@
         </div>
 
     </div>
+
+
 </x-app-layout>

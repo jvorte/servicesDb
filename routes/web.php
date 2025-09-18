@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SupportController;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+
 require __DIR__.'/auth.php';
 
 /*
@@ -12,11 +16,26 @@ require __DIR__.'/auth.php';
 | Web Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/lang/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'de'])) {
+        abort(400);
+    }
+
+    Session::put('locale', $locale);
+    App::setLocale($locale);
+
+    return redirect()->back();
+})->name('lang.switch');
 
 // Welcome page
 Route::get('/', function () {
     return view('welcome');
 });
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy-policy');
+Route::view('/terms', 'terms')->name('terms');
+Route::view('/support', 'support')->name('support');
+Route::post('/support-submit', [SupportController::class, 'submit'])->name('support.submit');
+
 
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {

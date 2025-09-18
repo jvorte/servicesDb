@@ -14,10 +14,10 @@
 
   <div class="py-6 max-w-4xl mx-auto">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-medium">Select a vehicle:</h3>
+      <h3 class="text-lg font-medium text-gray-100 shadow-gray-100">{{ __('messages.Select a vehicle') }}:</h3>
       <a href="{{ route('garage.create') }}"
         class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
-        + Add Vehicle
+        + {{ __('messages.Add Vehicle') }}
       </a>
     </div>
 
@@ -73,10 +73,10 @@
           <!-- Κουμπί -->
           <a href="{{ route('garage.edit', $vehicle) }}"
             class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700">
-            Edit
+            {{ __('messages.Edit') }}
           </a>
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $vehicle->id }}">
-            Delete
+            {{ __('messages.Delete') }}
           </button>
         </div>
       </div>
@@ -87,18 +87,18 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Confirm Delete</h5>
+              <h5 class="modal-title">{{ __('messages.Confirm Delete') }}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
-              Do you want delete this Vehicle ?
+             {{ __('messages.Do you want delete this Vehicle ?') }}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.Cancel') }}</button>
               <form action="{{ route('garage.destroy', $vehicle) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">Yes, delete</button>
+                <button type="submit" class="btn btn-danger">{{ __('messages.Yes, delete') }}</button>
               </form>
             </div>
           </div>
