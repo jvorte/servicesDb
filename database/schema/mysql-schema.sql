@@ -128,6 +128,20 @@ CREATE TABLE `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `support_messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `support_messages` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -158,6 +172,7 @@ CREATE TABLE `vehicles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `user_id` bigint(20) unsigned DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `vehicles_user_id_foreign` (`user_id`),
   CONSTRAINT `vehicles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
@@ -180,3 +195,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2025_09_15_1234
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2025_09_15_140143_add_service_interval_to_vehicles_table',3);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2025_09_16_075509_add_engine_to_vehicles_table',4);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2025_09_16_102813_add_completed_to_vehicles_table',5);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (11,'2025_09_17_102955_create_support_messages_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (12,'2025_09_18_085639_add_deleted_at_to_vehicles_table',7);
