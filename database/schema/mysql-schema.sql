@@ -108,6 +108,7 @@ CREATE TABLE `services` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `next_service` int(11) NOT NULL,
   `completed` tinyint(1) NOT NULL DEFAULT 0,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_vehicle_id_foreign` (`vehicle_id`),
   CONSTRAINT `services_vehicle_id_foreign` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE
@@ -197,3 +198,4 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2025_09_16_0755
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2025_09_16_102813_add_completed_to_vehicles_table',5);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (11,'2025_09_17_102955_create_support_messages_table',6);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (12,'2025_09_18_085639_add_deleted_at_to_vehicles_table',7);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'2025_09_18_092003_add_deleted_at_to_services_table',8);
